@@ -74,12 +74,10 @@ def generate_tutorial(topic, existing_ids):
         if article["id"] in existing_ids:
             article["id"] = article["id"] + "-alt"
 
-        # Auto-assign topic-relevant image from tags
+        # Assign a unique image per article using picsum (seed = hash of id)
         if not article.get("image"):
-            tags = article.get("tags", [])[:2]
-            kw = ",".join(re.sub(r'[^a-z0-9]', '-', tag.lower().strip()) for tag in tags)
-            lock = abs(hash(article["id"])) % 10000
-            article["image"] = f"https://loremflickr.com/800/450/{kw}?lock={lock}"
+            seed = abs(hash(article["id"])) % 1000
+            article["image"] = f"https://picsum.photos/seed/{seed}/800/450"
 
         return article
     except Exception as e:
