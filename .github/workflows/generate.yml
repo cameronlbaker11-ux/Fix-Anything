@@ -1,0 +1,32 @@
+name: Generate Articles
+
+on:
+  schedule:
+    - cron: '0 1,3,5 * * *'   # runs at 1am, 3am, 5am UTC every day
+  workflow_dispatch:            # allows manual trigger from GitHub UI
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install anthropic
+
+      - name: Generate articles
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python generate.py --count 4
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/tutorials.json
+          git diff --cached --quiet || git commit -m "nightly articles $(date +%Y-%m-%d-%H%M)"
+          git push

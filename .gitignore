@@ -1,7 +1,5 @@
-generate.py
 quality-generate.py
 populate.py
-requirements.txt
 daily-generate.sh
 __pycache__/
 *.pyc
