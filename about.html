@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — FixAnything</title>
+  <meta name="description" content="FixAnything is a free library of practical, no-nonsense how-to guides for everyday problems around the house, kitchen, and beyond.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">Fix<span>Anything</span></a>
+    <div class="nav-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="nav-search-input" type="text" placeholder="Search guides…">
+    </div>
+    <div class="nav-links">
+      <a href="search.html">All Guides</a>
+      <a href="search.html?cat=Home+%26+Plumbing">Home</a>
+      <a href="search.html?cat=Kitchen+%26+Appliances">Kitchen</a>
+      <a href="search.html?cat=Clothing+%26+Laundry">Clothing</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container" style="max-width:720px; padding-top:60px; padding-bottom:80px">
+  <h1 style="margin-bottom:8px">About FixAnything</h1>
+  <p style="color:var(--text3); margin-bottom:40px">Practical help for everyday problems.</p>
+
+  <div style="line-height:1.85; color:var(--text2)">
+    <p>FixAnything is a free library of step-by-step guides covering the kind of problems that slow your day down — a stuck zipper, a stained shirt, a dripping tap, a gummed-up garbage disposal. The stuff you'd normally search for, wade through five blog posts to find, and still not get a clear answer.</p>
+
+    <p style="margin-top:20px">Every guide is written to be direct and practical: what you need, what to do, what to watch out for. No filler, no paywalls, no sign-ups.</p>
+
+    <h2 style="margin-top:40px; margin-bottom:12px; font-size:1.25rem">What we cover</h2>
+    <ul style="padding-left:20px; margin:0">
+      <li style="margin-bottom:8px"><strong>Home</strong> — plumbing, cleaning, repair, electrical, and pets</li>
+      <li style="margin-bottom:8px"><strong>Kitchen</strong> — appliances, cookware, and pests</li>
+      <li style="margin-bottom:8px"><strong>Clothing</strong> — laundry, shoes, and repairs</li>
+      <li style="margin-bottom:8px"><strong>Personal Care</strong> — everyday grooming and health fixes</li>
+    </ul>
+
+    <h2 style="margin-top:40px; margin-bottom:12px; font-size:1.25rem">Always free</h2>
+    <p>All guides on FixAnything are and will always be free. The site is supported by unobtrusive advertising.</p>
+
+    <h2 style="margin-top:40px; margin-bottom:12px; font-size:1.25rem">Get in touch</h2>
+    <p>Found an error or have a suggestion? <a href="contact.html" style="color:var(--brick)">Send us a message</a> — we read everything.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="logo">Fix<span>Anything</span></div>
+        <p>Step-by-step guides for everyday problems. No fluff, no paywalls — just solutions that work.</p>
+      </div>
+      <div>
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="search.html?cat=Home+%26+Plumbing">Home & Plumbing</a></li>
+          <li><a href="search.html?cat=Home+%26+Cleaning">Home & Cleaning</a></li>
+          <li><a href="search.html?cat=Kitchen+%26+Appliances">Kitchen</a></li>
+          <li><a href="search.html?cat=Clothing+%26+Laundry">Clothing</a></li>
+          <li><a href="search.html?cat=Personal+Care">Personal Care</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="search.html">All Guides</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 FixAnything. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+<script>
+  const navSearch = document.getElementById('nav-search-input');
+  if (navSearch) {
+    navSearch.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && navSearch.value.trim())
+        window.location = `search.html?q=${encodeURIComponent(navSearch.value.trim())}`;
+    });
+  }
+</script>
+</body>
+</html>

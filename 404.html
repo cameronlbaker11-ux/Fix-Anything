@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found — FixAnything</title>
+  <meta name="description" content="This page doesn't exist. Browse FixAnything guides instead.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">Fix<span>Anything</span></a>
+    <div class="nav-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="nav-search-input" type="text" placeholder="Search guides…">
+    </div>
+    <div class="nav-links">
+      <a href="search.html">All Guides</a>
+      <a href="search.html?cat=Home+%26+Plumbing">Home</a>
+      <a href="search.html?cat=Kitchen+%26+Appliances">Kitchen</a>
+      <a href="search.html?cat=Clothing+%26+Laundry">Clothing</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container" style="text-align:center; padding:100px 20px 120px">
+  <div style="font-size:5rem; font-weight:700; color:var(--sand-light); line-height:1">404</div>
+  <h1 style="margin:16px 0 10px; font-size:1.75rem">Page not found</h1>
+  <p style="color:var(--text3); max-width:420px; margin:0 auto 36px">That page doesn't exist or has moved. Try searching for what you need, or head back home.</p>
+  <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap">
+    <a href="index.html" style="background:var(--brick); color:#fff; padding:11px 26px; border-radius:6px; text-decoration:none; font-weight:600; transition:background 0.2s"
+      onmouseover="this.style.background='var(--rust)'" onmouseout="this.style.background='var(--brick)'">← Back to Home</a>
+    <a href="search.html" style="background:var(--bg2); color:var(--text); padding:11px 26px; border-radius:6px; text-decoration:none; font-weight:600; border:1.5px solid var(--sand-light)">Browse All Guides</a>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="logo">Fix<span>Anything</span></div>
+        <p>Step-by-step guides for everyday problems. No fluff, no paywalls — just solutions that work.</p>
+      </div>
+      <div>
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="search.html?cat=Home+%26+Plumbing">Home & Plumbing</a></li>
+          <li><a href="search.html?cat=Home+%26+Cleaning">Home & Cleaning</a></li>
+          <li><a href="search.html?cat=Kitchen+%26+Appliances">Kitchen</a></li>
+          <li><a href="search.html?cat=Clothing+%26+Laundry">Clothing</a></li>
+          <li><a href="search.html?cat=Personal+Care">Personal Care</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="search.html">All Guides</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 FixAnything. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+<script>
+  const navSearch = document.getElementById('nav-search-input');
+  if (navSearch) {
+    navSearch.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && navSearch.value.trim())
+        window.location = `search.html?q=${encodeURIComponent(navSearch.value.trim())}`;
+    });
+  }
+</script>
+</body>
+</html>

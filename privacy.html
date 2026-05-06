@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — FixAnything</title>
+  <meta name="description" content="Privacy policy for FixAnything.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">Fix<span>Anything</span></a>
+    <div class="nav-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="nav-search-input" type="text" placeholder="Search guides…">
+    </div>
+    <div class="nav-links">
+      <a href="search.html">All Guides</a>
+      <a href="search.html?cat=Home+%26+Plumbing">Home</a>
+      <a href="search.html?cat=Kitchen+%26+Appliances">Kitchen</a>
+      <a href="search.html?cat=Clothing+%26+Laundry">Clothing</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container" style="max-width:720px; padding-top:60px; padding-bottom:80px">
+  <h1 style="margin-bottom:8px">Privacy Policy</h1>
+  <p style="color:var(--text3); margin-bottom:40px">Last updated: May 2026</p>
+
+  <div style="line-height:1.85; color:var(--text2)">
+
+    <h2 style="font-size:1.15rem; margin-bottom:10px">1. Information We Collect</h2>
+    <p>FixAnything does not require you to create an account or provide personal information to use the site. We do not knowingly collect any personally identifiable information from visitors.</p>
+    <p style="margin-top:12px">When you visit the site, standard server logs may record your IP address, browser type, the pages you visit, and the time of your visit. This data is used solely for aggregate analytics and security purposes and is not sold or shared.</p>
+
+    <h2 style="font-size:1.15rem; margin-top:36px; margin-bottom:10px">2. Cookies</h2>
+    <p>FixAnything itself does not set any first-party cookies. Third-party advertising partners (such as Google AdSense) may set cookies to serve relevant advertisements. You can opt out of personalised advertising through <a href="https://adssettings.google.com" style="color:var(--brick)" target="_blank" rel="noopener">Google's ad settings</a> or by using your browser's cookie controls.</p>
+
+    <h2 style="font-size:1.15rem; margin-top:36px; margin-bottom:10px">3. Advertising</h2>
+    <p>We use third-party advertising companies to serve ads when you visit our site. These companies may use information about your visits to this and other websites to provide relevant advertisements. This is governed by those companies' own privacy policies, not ours.</p>
+
+    <h2 style="font-size:1.15rem; margin-top:36px; margin-bottom:10px">4. Third-Party Links</h2>
+    <p>Our guides may link to external websites. We are not responsible for the privacy practices or content of those sites.</p>
+
+    <h2 style="font-size:1.15rem; margin-top:36px; margin-bottom:10px">5. Children's Privacy</h2>
+    <p>FixAnything is not directed at children under the age of 13 and does not knowingly collect information from children.</p>
+
+    <h2 style="font-size:1.15rem; margin-top:36px; margin-bottom:10px">6. Changes to This Policy</h2>
+    <p>We may update this policy occasionally. Changes will be posted on this page with an updated date. Continued use of the site constitutes acceptance of the updated policy.</p>
+
+    <h2 style="font-size:1.15rem; margin-top:36px; margin-bottom:10px">7. Contact</h2>
+    <p>Questions about this policy? <a href="contact.html" style="color:var(--brick)">Get in touch</a>.</p>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="logo">Fix<span>Anything</span></div>
+        <p>Step-by-step guides for everyday problems. No fluff, no paywalls — just solutions that work.</p>
+      </div>
+      <div>
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="search.html?cat=Home+%26+Plumbing">Home & Plumbing</a></li>
+          <li><a href="search.html?cat=Home+%26+Cleaning">Home & Cleaning</a></li>
+          <li><a href="search.html?cat=Kitchen+%26+Appliances">Kitchen</a></li>
+          <li><a href="search.html?cat=Clothing+%26+Laundry">Clothing</a></li>
+          <li><a href="search.html?cat=Personal+Care">Personal Care</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="search.html">All Guides</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 FixAnything. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+<script>
+  const navSearch = document.getElementById('nav-search-input');
+  if (navSearch) {
+    navSearch.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && navSearch.value.trim())
+        window.location = `search.html?q=${encodeURIComponent(navSearch.value.trim())}`;
+    });
+  }
+</script>
+</body>
+</html>
