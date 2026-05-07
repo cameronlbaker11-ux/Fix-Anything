@@ -172,8 +172,12 @@ async function initTutorial() {
         <div class="needs-box">
           <h3>What You'll Need</h3>
           <ul class="needs-list">
-            ${t.whatYouNeed.map(item => `<li>${item}</li>`).join('')}
+            ${t.whatYouNeed.map(item => {
+              const q = encodeURIComponent(item);
+              return `<li><a href="https://www.amazon.com/s?k=${q}&tag=fixanything03-20" target="_blank" rel="noopener" class="amazon-link">${item} <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:0.6"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a></li>`;
+            }).join('')}
           </ul>
+          <p class="amazon-note">As an Amazon Associate, FixAnything earns from qualifying purchases.</p>
         </div>
 
         <div class="steps-section">

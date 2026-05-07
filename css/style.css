@@ -597,6 +597,27 @@ nav {
   margin-top: 2px;
 }
 
+.amazon-link {
+  color: var(--text2);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px dashed var(--sand);
+  transition: color 0.15s, border-color 0.15s;
+}
+.amazon-link:hover {
+  color: var(--brick);
+  border-color: var(--brick);
+}
+
+.amazon-note {
+  margin-top: 14px;
+  font-size: 0.75rem;
+  color: var(--text3);
+  font-style: italic;
+}
+
 .steps-section h2 {
   font-size: 0.72rem;
   font-weight: 700;
