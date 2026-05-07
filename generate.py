@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """FixAnything - Claude API minimal token usage"""
-import argparse, json, os, re, sys, time
+import argparse, json, os, re, sys, time, urllib.request, urllib.parse
 from pathlib import Path
 from anthropic import Anthropic
 
 API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+PEXELS_KEY = os.environ.get("PEXELS_API_KEY", "")
 TUTORIALS_FILE = Path(__file__).parent / "data" / "tutorials.json"
 
 CATEGORIES = ["Home & Plumbing", "Home & Cleaning", "Home & Repair", "Home & Electrical",
@@ -23,6 +24,25 @@ TOPICS = [
 ] * 5  # Pool of topics
 
 client = Anthropic(api_key=API_KEY)
+
+def fetch_pexels_image(query):
+    """Fetch a relevant photo URL from Pexels."""
+    if not PEXELS_KEY:
+        return None
+    try:
+        q = urllib.parse.quote(query)
+        req = urllib.request.Request(
+            f"https://api.pexels.com/v1/search?query={q}&per_page=1&orientation=landscape",
+            headers={"Authorization": PEXELS_KEY, "User-Agent": "Mozilla/5.0"}
+        )
+        with urllib.request.urlopen(req, timeout=10) as r:
+            data = json.loads(r.read())
+        photos = data.get("photos", [])
+        if photos:
+            return photos[0]["src"]["large"]
+    except Exception:
+        pass
+    return None
 
 def load_tutorials():
     return json.load(open(TUTORIALS_FILE)) if TUTORIALS_FILE.exists() else []
@@ -74,10 +94,15 @@ def generate_tutorial(topic, existing_ids):
         if article["id"] in existing_ids:
             article["id"] = article["id"] + "-alt"
 
-        # Assign a unique image per article using picsum (seed = hash of id)
+        # Fetch topic-relevant image from Pexels
         if not article.get("image"):
-            seed = abs(hash(article["id"])) % 1000
-            article["image"] = f"https://picsum.photos/seed/{seed}/800/450"
+            img = fetch_pexels_image(article.get("title", topic))
+            if img:
+                article["image"] = img
+            else:
+                # Fallback: unique picsum image
+                seed = abs(hash(article["id"])) % 1000
+                article["image"] = f"https://picsum.photos/seed/{seed}/800/450"
 
         return article
     except Exception as e:
