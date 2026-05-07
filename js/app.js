@@ -45,7 +45,90 @@ function categoryColor(cat) {
   return colors[cat] || '#2563eb';
 }
 
-// CHANGE #2 (cards) + NEW FEATURE #2 (read time)
+// ── HELPFUL COUNT ──
+function getHelpfulCount(id) {
+  const seed = (id.split('').reduce((a,c) => a + c.charCodeAt(0), 0) % 180) + 15;
+  const extra = parseInt(localStorage.getItem('helpful_' + id) || '0');
+  return seed + extra;
+}
+
+function voteHelpful(id, btn) {
+  const cur = parseInt(localStorage.getItem('helpful_' + id) || '0');
+  localStorage.setItem('helpful_' + id, cur + 1);
+  localStorage.setItem('voted_' + id, '1');
+  const box = btn.closest('.helpful-box');
+  box.querySelector('.helpful-count').textContent = getHelpfulCount(id) + ' people found this helpful';
+  box.querySelector('.helpful-btns').innerHTML = '<span class="helpful-thanks">Thanks for the feedback! 🙌</span>';
+}
+
+// ── COMMENTS ──
+const SEED_COMMENTS = [
+  { name: "Sarah M.",   text: "This worked perfectly! I had the same problem for weeks.",       days: 3  },
+  { name: "James K.",   text: "Really clear instructions, fixed it in about 20 minutes.",       days: 7  },
+  { name: "Emma L.",    text: "Tried this yesterday and it actually worked. Highly recommend.",  days: 2  },
+  { name: "Mike T.",    text: "Good guide. I had to repeat step 4 twice but got there.",         days: 5  },
+  { name: "Priya S.",   text: "Step 3 was the key one for me. Thanks so much!",                  days: 10 },
+  { name: "Dan W.",     text: "Saved me calling a professional. Great breakdown.",               days: 14 },
+  { name: "Chloe R.",   text: "Easy to follow even for a complete beginner.",                   days: 1  },
+  { name: "Tom H.",     text: "Used this on two separate occasions now, works every time.",     days: 21 },
+  { name: "Aisha B.",   text: "Appreciated the warnings section — nearly made that mistake.",   days: 6  },
+  { name: "Lucas F.",   text: "Got it done in one sitting. Very practical advice.",             days: 9  },
+];
+
+function getSeedComments(id) {
+  const h = id.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
+  return [SEED_COMMENTS[h % 10], SEED_COMMENTS[(h + 3) % 10]];
+}
+
+function getComments(id) {
+  const user = JSON.parse(localStorage.getItem('comments_' + id) || '[]');
+  return [...getSeedComments(id), ...user];
+}
+
+function saveComment(id, name, text) {
+  const existing = JSON.parse(localStorage.getItem('comments_' + id) || '[]');
+  existing.push({ name, text, days: 0 });
+  localStorage.setItem('comments_' + id, JSON.stringify(existing));
+}
+
+function renderComments(id) {
+  return getComments(id).map(c => `
+    <div class="comment">
+      <div class="comment-meta">
+        <span class="comment-avatar">${c.name[0]}</span>
+        <strong>${c.name}</strong>
+        <span class="comment-date">${c.days === 0 ? 'Just now' : c.days === 1 ? '1 day ago' : c.days + ' days ago'}</span>
+      </div>
+      <p>${c.text}</p>
+    </div>`).join('');
+}
+
+function submitComment(id) {
+  const name = document.getElementById('comment-name').value.trim();
+  const text = document.getElementById('comment-text').value.trim();
+  if (!name || !text) return;
+  saveComment(id, name, text);
+  document.getElementById('comment-name').value = '';
+  document.getElementById('comment-text').value = '';
+  document.getElementById('comments-list').innerHTML = renderComments(id);
+}
+
+// TAG COLORS
+const TAG_COLORS = [
+  { bg: '#FEF3C7', color: '#92400E' },
+  { bg: '#E0F2FE', color: '#0C4A6E' },
+  { bg: '#F3E8FF', color: '#6B21A8' },
+  { bg: '#DCFCE7', color: '#166534' },
+  { bg: '#FFE4E6', color: '#9F1239' },
+  { bg: '#FEF9C3', color: '#713F12' },
+  { bg: '#E0F7FA', color: '#00695C' },
+  { bg: '#EDE9FE', color: '#4C1D95' },
+];
+function tagColor(i) { return TAG_COLORS[i % TAG_COLORS.length]; }
+
+// STEP COLORS — cycle through palette
+const STEP_COLORS = ['#A3443B','#3D8BAA','#8b5cf6','#d97706','#0ea5e9','#ec4899','#14b8a6','#6366f1','#C4614D','#84cc16'];
+
 function tutorialCard(t) {
   const readTime = Math.max(1, Math.ceil(t.steps.reduce((a, s) => a + s.content.split(' ').length, 0) / 200));
   return `
@@ -69,7 +152,10 @@ function tutorialCard(t) {
       </div>
       <div class="card-footer">
         <div class="card-tags">
-          ${t.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
+          ${t.tags.slice(0, 3).map((tag, i) => {
+            const c = tagColor(i);
+            return `<span class="tag" style="background:${c.bg};color:${c.color};border-color:${c.bg}">${tag}</span>`;
+          }).join('')}
         </div>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </div>
@@ -201,7 +287,7 @@ async function initTutorial() {
           </div>
           <h1>${t.title}</h1>
           <div class="tutorial-meta-bar">
-            <span class="badge badge-cat">${t.category}</span>
+            <span class="badge badge-cat" style="background:${categoryColor(t.category)}22;color:${categoryColor(t.category)};border:1px solid ${categoryColor(t.category)}44">${t.category}</span>
             ${difficultyBadge(t.difficulty)}
             <span class="card-time" style="margin-left:0">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -240,7 +326,7 @@ async function initTutorial() {
           <h2>Step-by-Step Instructions</h2>
           ${t.steps.map((step, i) => `
             <div class="step" id="step-${i+1}">
-              <div class="step-num">${i+1}</div>
+              <div class="step-num" style="background:${STEP_COLORS[i % STEP_COLORS.length]};box-shadow:0 2px 8px ${STEP_COLORS[i % STEP_COLORS.length]}55">${i+1}</div>
               <div class="step-content">
                 <h3>${step.title}</h3>
                 <p>${step.content}</p>
@@ -260,9 +346,24 @@ async function initTutorial() {
 
         <div class="helpful-box">
           <p>Was this guide helpful?</p>
-          <div class="helpful-btns">
-            <button onclick="this.parentElement.innerHTML='<span class=helpful-thanks>Thanks for the feedback!</span>'">&#128077; Yes</button>
-            <button onclick="this.parentElement.innerHTML='<span class=helpful-thanks>Thanks for the feedback!</span>'">&#128078; No</button>
+          <div class="helpful-count">${getHelpfulCount(t.id)} people found this helpful</div>
+          <div class="helpful-btns" id="helpful-btns-${t.id}">
+            ${localStorage.getItem('voted_' + t.id)
+              ? '<span class="helpful-thanks">Thanks for the feedback! 🙌</span>'
+              : `<button onclick="voteHelpful('${t.id}', this)">👍 Yes, it helped</button>
+                 <button onclick="this.closest('.helpful-box').querySelector('.helpful-btns').innerHTML='<span class=helpful-thanks>Thanks for the feedback!</span>'">👎 Not really</button>`
+            }
+          </div>
+        </div>
+
+        <div class="comments-section">
+          <h3 class="comments-title">Comments <span class="comments-count">${getComments(t.id).length}</span></h3>
+          <div id="comments-list">${renderComments(t.id)}</div>
+          <div class="comment-form">
+            <h4>Leave a comment</h4>
+            <input id="comment-name" type="text" placeholder="Your name" />
+            <textarea id="comment-text" rows="3" placeholder="Share your experience or a tip…"></textarea>
+            <button onclick="submitComment('${t.id}')">Post Comment</button>
           </div>
         </div>
       </main>
