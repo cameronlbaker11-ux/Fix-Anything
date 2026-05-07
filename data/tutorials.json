@@ -10869,5 +10869,73 @@
       "fix-running-toilet"
     ],
     "image": "https://images.pexels.com/photos/9562388/pexels-photo-9562388.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+  },
+  {
+    "id": "remove-wine-stains-from-carpet",
+    "title": "How to Remove Wine Stains from Carpet",
+    "category": "Home & Cleaning",
+    "difficulty": "Easy",
+    "time": "15 min",
+    "tags": [
+      "carpet cleaning",
+      "wine stains",
+      "stain removal",
+      "household cleaning",
+      "carpet care"
+    ],
+    "description": "Remove fresh or set-in wine stains from carpet using common household items and proven techniques.",
+    "intro": "Wine stains occur because the tannins and pigments in wine bond quickly to carpet fibers, making them particularly stubborn if left untreated. The key to successful removal is acting fast on fresh spills and using the right solvents to break down the stain's chemical structure. This guide provides multiple methods depending on whether the stain is fresh or dried, ensuring you can tackle any wine accident.",
+    "whatYouNeed": [
+      "Clean white cloth or paper towels",
+      "Cold water",
+      "White vinegar",
+      "Baking soda",
+      "Dish soap",
+      "Hydrogen peroxide (3%)",
+      "Spray bottle",
+      "Blotting cloth or old towel"
+    ],
+    "steps": [
+      {
+        "title": "Blot the Fresh Spill Immediately",
+        "content": "As soon as wine spills, use clean white cloth or paper towels to blot\u2014never rub\u2014the affected area to absorb as much liquid as possible. Work from the outside edges of the stain toward the center to prevent spreading it further across the carpet fibers. Blot repeatedly with fresh cloth sections until no more wine transfers to the towels."
+      },
+      {
+        "title": "Rinse with Cold Water",
+        "content": "Pour a small amount of cold water directly onto the stain and continue blotting with clean cloth to dilute and lift remaining wine pigments. Cold water works better than hot water because it prevents the wine proteins from setting permanently into the fibers. Work methodically, rinsing and blotting until the cloth comes away mostly clear."
+      },
+      {
+        "title": "Apply White Vinegar Solution",
+        "content": "Mix equal parts white vinegar and water in a spray bottle and spray generously onto the stained area. Let it sit for 5-10 minutes\u2014the vinegar's acidity breaks down the tannins responsible for the stain's color and odor. Blot thoroughly with clean cloth, repeating the spray-and-blot process 2-3 times until improvement is visible."
+      },
+      {
+        "title": "Use Baking Soda for Absorption",
+        "content": "After the vinegar treatment, sprinkle a generous amount of baking soda directly over the damp stain to absorb remaining moisture and odors. Let it dry completely for at least 2 hours, or overnight for best results\u2014baking soda naturally neutralizes stain particles as it dries. Vacuum thoroughly once dry to remove all baking soda residue."
+      },
+      {
+        "title": "Apply Soap and Water Solution for Stubborn Stains",
+        "content": "For stains that remain after vinegar treatment, mix 1 teaspoon of dish soap with 1 cup of warm water in a spray bottle. Spray the solution onto the stain and let sit for 5-10 minutes, then blot with clean cloth repeatedly. This method works well because dish soap breaks down the oil-like components of wine that vinegar alone may not fully dissolve."
+      },
+      {
+        "title": "Try Hydrogen Peroxide for Set-In Stains",
+        "content": "For older or stubborn wine stains, test 3% hydrogen peroxide on an inconspicuous carpet area first to ensure it won't bleach the color. Apply directly to the stain, let bubble for 5-10 minutes, then blot with white cloth\u2014the peroxide breaks down pigment molecules through oxidation. Repeat as needed, always testing first since some carpet dyes are sensitive to peroxide."
+      },
+      {
+        "title": "Final Rinse and Dry",
+        "content": "Use cold water to rinse away all cleaning solution residue, blotting thoroughly with clean cloth to avoid leaving soap or chemical residue that attracts dirt. Place a dry towel over the area and weigh it down with a heavy object for several hours to absorb remaining moisture and prevent mildew. Ensure the carpet is completely dry before walking on it normally to prevent re-soiling."
+      }
+    ],
+    "warnings": [
+      "Always test any cleaning solution on a hidden carpet area first, as some treatments may bleach or damage certain carpet dyes or materials.",
+      "Never use hot water on wine stains as heat can set protein-based wine compounds permanently into fibers.",
+      "Avoid rubbing motions which work the stain deeper into carpet pile; always blot instead.",
+      "Hydrogen peroxide can bleach dark-colored carpets\u2014use with extreme caution and always dilute or test first."
+    ],
+    "relatedIds": [
+      "remove-pet-stains-from-carpet",
+      "clean-carpet-naturally",
+      "remove-coffee-stains-from-fabric"
+    ],
+    "image": "https://images.pexels.com/photos/19011652/pexels-photo-19011652.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
   }
 ]

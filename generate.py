@@ -118,21 +118,44 @@ def save_tutorials(tutorials):
         f.write("\n")
 
 def generate_tutorial(topic, existing_ids):
-    """Ultra-minimal token usage with Haiku"""
-    # Extremely terse prompt - ~30 tokens
-    prompt = f"""Topic: {topic}. JSON (5 steps min, 2+ items): {{"id":"slug","title":"How to","category":"Home & Cleaning","difficulty":"Easy","time":"15min","tags":["a","b","c","d","e"],"description":"one line","intro":"2-3 lines","whatYouNeed":["item1","item2"],"steps":[{{"title":"step","content":"details"}}],"warnings":[],"relatedIds":["a","b","c"]}}"""
-    
+    """Generate a detailed, high-quality tutorial for AdSense approval and SEO."""
+    prompt = f"""Write a detailed, practical how-to guide for: {topic}
+
+Return valid JSON matching this exact structure:
+{{
+  "id": "url-slug-here",
+  "title": "How to [specific title]",
+  "category": "Home & Cleaning",
+  "difficulty": "Easy",
+  "time": "15 min",
+  "tags": ["tag1","tag2","tag3","tag4","tag5"],
+  "description": "One sentence summary of what this guide solves.",
+  "intro": "2-3 sentences explaining why this problem happens and why this solution works. Be specific and helpful.",
+  "whatYouNeed": ["item1","item2","item3","item4"],
+  "steps": [
+    {{"title": "Step title", "content": "Detailed 2-3 sentence explanation of exactly what to do and why it works."}}
+  ],
+  "warnings": ["Important caution if relevant"],
+  "relatedIds": ["related-slug-1","related-slug-2","related-slug-3"]
+}}
+
+Requirements:
+- At least 7 detailed steps with 2-3 sentences each
+- intro must be specific and useful, not generic
+- steps must have actionable, detailed content
+- category must be one of: Home & Plumbing, Home & Cleaning, Home & Repair, Home & Electrical, Home & Pets, Kitchen & Appliances, Kitchen & Cookware, Kitchen & Pests, Clothing & Laundry, Clothing & Shoes, Clothing & Repair, Personal Care"""
+
     try:
         response = client.messages.create(
             model="claude-haiku-4-5",
-            max_tokens=1500,
+            max_tokens=2500,
             messages=[
                 {
                     "role": "user",
                     "content": prompt
                 }
             ],
-            system="Output ONLY valid JSON. No markdown."
+            system="Output ONLY valid JSON. No markdown fences. No commentary."
         )
         
         text = response.content[0].text.strip()
