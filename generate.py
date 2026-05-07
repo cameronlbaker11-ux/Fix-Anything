@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """FixAnything - Claude API minimal token usage"""
-import argparse, json, os, re, sys, time, urllib.request, urllib.parse
+import argparse, json, os, random, re, sys, time, urllib.request, urllib.parse
 from pathlib import Path
 from anthropic import Anthropic
 
@@ -13,15 +13,80 @@ CATEGORIES = ["Home & Plumbing", "Home & Cleaning", "Home & Repair", "Home & Ele
     "Clothing & Laundry", "Clothing & Shoes", "Clothing & Repair", "Personal Care"]
 
 TOPICS = [
-    "remove paint stains jeans", "fix sagging cabinet door", "remove coffee ring wood",
-    "fix loose shower grout", "remove tape residue walls", "clean coffee maker holes",
-    "fix water stains leather", "remove ink fabric", "fix stuck zipper",
-    "clean shower mineral buildup", "remove pet smell plastic", "fix squeaky hinges",
-    "remove wax buildup floor", "clean kettle lime deposits", "fix cracked grout",
-    "remove rust stains", "clean bathroom mold", "fix squeaky new shoes",
-    "remove dried caulk", "clean garbage disposal", "remove paint splatter",
-    "fix loose door knob", "remove sticker residue", "clean oven window",
-] * 5  # Pool of topics
+    # Clothing & Laundry
+    "remove paint stains jeans", "remove ink from fabric", "fix stuck zipper",
+    "remove deodorant stains shirt", "unshrink wool sweater", "remove blood stain fabric",
+    "wash down jacket at home", "remove red wine from white shirt", "fix hole in jeans",
+    "remove sweat stains collar", "wash silk blouse at home", "remove grass stains",
+    "remove bleach stain clothing", "fix stretched out collar", "remove lipstick from fabric",
+    "remove chocolate stain clothes", "wash delicate fabrics by hand", "remove mud from clothes",
+    "fix pilling on sweater", "remove static cling clothes",
+    # Clothing & Shoes
+    "fix squeaky new shoes", "remove salt stains boots", "waterproof leather shoes",
+    "stretch tight shoes at home", "remove scuff marks leather shoes", "clean white sneakers",
+    "fix broken shoe sole", "remove water stains suede", "clean canvas shoes",
+    "remove smell from shoes", "fix worn down shoe heel", "clean patent leather shoes",
+    "remove mold from shoes", "fix cracked leather boots", "clean shoe insoles",
+    # Home & Cleaning
+    "remove tape residue walls", "clean bathroom mold", "remove wax buildup floor",
+    "clean oven window inside", "remove hard water shower glass", "clean grout between tiles",
+    "remove smoke smell room", "clean ceiling fan blades", "remove crayon from wall",
+    "clean window tracks", "remove rust from bathtub", "clean under refrigerator",
+    "remove mildew from shower curtain", "clean garbage disposal smell", "remove pet hair carpet",
+    "clean baseboards quickly", "remove yellow stains from white wall", "clean light switches",
+    "remove limescale from toilet", "clean air vents dust", "remove candle wax carpet",
+    "clean washing machine drum", "remove soap scum shower door", "clean stainless steel sink",
+    "remove coffee stain carpet", "clean microwave splatter", "remove mold from caulk",
+    "clean oven racks without chemicals", "remove grease kitchen backsplash", "clean refrigerator coils",
+    # Home & Plumbing
+    "fix loose shower grout", "fix dripping faucet", "unclog bathroom sink",
+    "fix running toilet", "increase low water pressure", "fix leaky pipe joint",
+    "unclog shower drain", "fix toilet that won't flush", "replace toilet flapper",
+    "fix garbage disposal hum", "stop pipes banging walls", "fix slow draining tub",
+    "replace showerhead", "fix outdoor faucet drip", "unclog kitchen sink without chemicals",
+    "fix toilet rocking base", "replace sink aerator", "fix shower diverter",
+    "stop toilet tank condensation", "fix sump pump alarm",
+    # Home & Repair
+    "fix squeaky hinges", "remove sticker residue", "patch hole in drywall",
+    "fix loose door knob", "fix door that sticks", "fix squeaky floorboard",
+    "repair window screen hole", "fix loose cabinet hinge", "reattach peeling wallpaper",
+    "fix sagging cabinet door", "repair chipped wooden furniture", "fix sticky drawer",
+    "reglue loose laminate floor", "fix cracked tile without replacing", "repair torn window screen",
+    "fix loose towel bar", "repair dent in wood floor", "fix door that won't latch",
+    "repair split wood furniture", "fix wobbly chair leg",
+    # Home & Electrical
+    "fix flickering light", "reset tripped circuit breaker", "fix loose electrical outlet",
+    "replace light switch", "fix ceiling fan wobble", "replace doorbell button",
+    "fix lamp that flickers", "replace bathroom exhaust fan", "fix dead outlet",
+    "wire new light fixture",
+    # Kitchen & Appliances
+    "clean coffee maker holes", "descale electric kettle", "fix refrigerator not cooling",
+    "clean dishwasher filter", "fix microwave turntable", "descale coffee machine",
+    "clean toaster crumb tray", "fix ice maker not working", "clean blender properly",
+    "fix oven temperature inaccurate", "clean range hood filter", "fix dishwasher not draining",
+    "clean food processor blades", "fix slow coffee maker", "clean electric griddle",
+    # Kitchen & Cookware
+    "remove coffee ring wood table", "season cast iron pan", "fix warped pan",
+    "remove burnt food pot", "clean stained cutting board", "remove rust cast iron",
+    "restore nonstick pan", "clean copper pots", "remove mineral deposits kettle",
+    "sharpen kitchen knives at home",
+    # Kitchen & Pests
+    "get rid of fruit flies fast", "remove ants from kitchen", "get rid of pantry moths",
+    "keep mice out of kitchen", "get rid of cockroaches kitchen", "remove drain flies",
+    "keep spiders out of house", "get rid of gnats houseplants", "remove silverfish bathroom",
+    "prevent weevils in flour",
+    # Home & Pets
+    "remove pet smell plastic", "clean pet urine from mattress", "remove dog smell sofa",
+    "clean pet hair from car seats", "remove cat scratch marks furniture",
+    "get rid of fleas in carpet", "remove skunk smell dog", "clean pet water bowl slime",
+    "remove pet hair from clothes dryer", "fix cat scratch on leather sofa",
+    # Personal Care
+    "fix broken nail at home", "remove slime from hair", "get gum out of hair",
+    "fix frizzy hair humidity", "remove hair dye from skin", "treat ingrown hair",
+    "remove gel nail polish at home", "fix chapped lips fast", "remove fake tan streaks",
+    "treat sunburn at home", "remove hair from drain", "fix dry cracked heels",
+    "remove mascara without remover", "treat razor burn", "remove wax from eyebrows at home",
+]
 
 client = Anthropic(api_key=API_KEY)
 
@@ -120,7 +185,7 @@ def main():
 
     print(f"Generating {args.count} tutorial(s) (Haiku - minimal tokens)...\n")
     
-    topics = [args.topic] if args.topic else TOPICS[:args.count]
+    topics = [args.topic] if args.topic else random.sample(TOPICS, min(args.count, len(TOPICS)))
     generated = []
 
     for i, topic in enumerate(topics, 1):
