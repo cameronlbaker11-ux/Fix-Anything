@@ -10937,5 +10937,76 @@
       "remove-coffee-stains-from-fabric"
     ],
     "image": "https://images.pexels.com/photos/19011652/pexels-photo-19011652.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+  },
+  {
+    "id": "clean-coffee-maker",
+    "title": "How to Clean a Coffee Maker",
+    "category": "Kitchen & Appliances",
+    "difficulty": "Easy",
+    "time": "15 min",
+    "tags": [
+      "coffee maker",
+      "kitchen cleaning",
+      "appliance maintenance",
+      "descaling",
+      "daily cleaning"
+    ],
+    "description": "Remove mineral buildup, stale coffee residue, and mold from your coffee maker to restore flavor and extend its lifespan.",
+    "intro": "Over time, mineral deposits from water and dried coffee oils accumulate inside your coffee maker, creating a breeding ground for bacteria and mold while degrading your coffee's taste. This buildup occurs because hot water naturally extracts minerals like calcium and magnesium, which crystallize on internal surfaces. Regular cleaning not only improves flavor but prevents costly repairs and extends your machine's lifespan significantly.",
+    "whatYouNeed": [
+      "White vinegar",
+      "Water",
+      "Soft cleaning brush or old toothbrush",
+      "Paper filters or reusable filter",
+      "Dish soap",
+      "Soft cloth or sponge",
+      "Small bowl for soaking parts"
+    ],
+    "steps": [
+      {
+        "title": "Empty and disassemble the coffee maker",
+        "content": "Remove any remaining coffee grounds, used filters, and water from the reservoir. Take apart all removable components including the carafe, filter basket, and water tank\u2014these pieces can usually be lifted or twisted out. Emptying the machine first prevents old grounds from mixing with your cleaning solution and makes each component easier to clean individually."
+      },
+      {
+        "title": "Wash removable parts with warm soapy water",
+        "content": "Use dish soap and warm water to scrub the carafe, filter basket, and water tank thoroughly, paying special attention to corners and crevices where oils collect. Rinse all parts completely under running water and set them aside to dry. This removes surface-level coffee residue and oils that would otherwise be harder to eliminate during the deep clean."
+      },
+      {
+        "title": "Soak the carafe in vinegar solution",
+        "content": "Fill a bowl with equal parts white vinegar and water, then submerge the carafe for 15-20 minutes. While it soaks, use the soft brush to gently scrub the interior walls to dislodge any stubborn stains or buildup. The acidity in vinegar breaks down mineral deposits and kills bacteria without damaging glass."
+      },
+      {
+        "title": "Fill the water reservoir with vinegar solution",
+        "content": "Mix equal parts white vinegar and water, then pour the solution into the coffee maker's water reservoir until it's full. Do not add a filter or grounds at this stage. This solution will run through the entire brewing system, dissolving mineral buildup in areas you cannot physically reach."
+      },
+      {
+        "title": "Run a cleaning cycle",
+        "content": "Place an empty carafe under the brew basket and turn on the coffee maker as if you were making regular coffee. Let the vinegar solution brew slowly through the system, which forces the acidic mixture through all internal pipes and heating elements where mineral deposits accumulate. This process typically takes 5-10 minutes and effectively dissolves calcium buildup that causes reduced water flow and poor extraction."
+      },
+      {
+        "title": "Repeat the vinegar cycle and flush",
+        "content": "After the first cycle completes, let the machine cool for a few minutes, then run a second cycle using the remaining vinegar solution. Once this cycle finishes, empty the carafe and run 2-3 full cycles using only fresh water to rinse out all vinegar residue thoroughly. Vinegar left in the system will affect your coffee's taste, so complete rinsing is essential."
+      },
+      {
+        "title": "Clean the spray head and nozzle",
+        "content": "Use your soft brush to gently clean the spray head (the part that distributes water over the grounds) and the brew basket nozzle where water exits into the carafe. Mineral deposits here can cause uneven water distribution and weak coffee. A toothbrush works well for reaching small holes and crevices in these components."
+      },
+      {
+        "title": "Dry and reassemble everything",
+        "content": "Wipe all components dry with a soft cloth and ensure no moisture remains in the water reservoir or internal surfaces. Reassemble the coffee maker, replacing the water tank, filter basket, and carafe in their original positions. Run one final test brew with clean water and a fresh filter to ensure everything works properly and no vinegar smell remains."
+      }
+    ],
+    "warnings": [
+      "Do not use vinegar in machines with aluminum components or seals that may corrode\u2014check your manual for material compatibility",
+      "Always unplug the coffee maker before disassembling or cleaning to prevent electrical hazards",
+      "Never soak electronic components or the base unit itself; only clean removable parts individually",
+      "Ensure all vinegar is thoroughly rinsed out before making coffee, as residual vinegar will ruin your drink's taste"
+    ],
+    "relatedIds": [
+      "clean-coffee-grinder",
+      "remove-coffee-stains",
+      "descale-coffee-maker"
+    ],
+    "image": "https://images.pexels.com/photos/5591850/pexels-photo-5591850.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
   }
 ]
