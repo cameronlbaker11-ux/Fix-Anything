@@ -45,7 +45,9 @@ function categoryColor(cat) {
   return colors[cat] || '#2563eb';
 }
 
+// CHANGE #2 (cards) + NEW FEATURE #2 (read time)
 function tutorialCard(t) {
+  const readTime = Math.max(1, Math.ceil(t.steps.reduce((a, s) => a + s.content.split(' ').length, 0) / 200));
   return `
     <div class="tutorial-card" onclick="window.location='tutorial.html?id=${t.id}'">
       ${t.image ? `<div class="card-img"><img src="${t.image}" alt="${t.title}" loading="lazy"></div>` : `<div class="card-cat-bar"></div>`}
@@ -56,6 +58,10 @@ function tutorialCard(t) {
           <span class="card-time">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             ${t.time}
+          </span>
+          <span class="card-time card-read-time">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            ${readTime} min read
           </span>
         </div>
         <div class="card-title">${t.title}</div>
@@ -74,13 +80,14 @@ function tutorialCard(t) {
 async function initHome() {
   const tutorials = await loadTutorials();
 
-  // Categories
+  // CHANGE #3: Category cards with colored top border
   const catGrid = document.getElementById('categories-grid');
   if (catGrid) {
     catGrid.innerHTML = CATEGORIES.map(c => {
       const count = tutorials.filter(t => t.category === c.name).length;
+      const color = categoryColor(c.name);
       return `
-        <div class="category-card" onclick="window.location='search.html?cat=${encodeURIComponent(c.name)}'">
+        <div class="category-card" style="border-top: 4px solid ${color}" onclick="window.location='search.html?cat=${encodeURIComponent(c.name)}'">
           <div class="cat-abbr">${c.abbr}</div>
           <div class="name">${c.name}</div>
           <div class="count">${count} guides</div>
@@ -102,6 +109,25 @@ async function initHome() {
 
   // Stats
   document.querySelectorAll('[data-stat="total"]').forEach(el => el.textContent = tutorials.length + '+');
+
+  // NEW FEATURE #7: Popular search chips — inject after hero stats
+  const heroStats = document.querySelector('.hero-stats');
+  if (heroStats) {
+    const chips = document.createElement('div');
+    chips.className = 'search-chips';
+    chips.innerHTML = `
+      <span>Try:</span>
+      <a href="search.html?q=remove+stain">remove stain</a>
+      <a href="search.html?q=fix+leak">fix leak</a>
+      <a href="search.html?q=squeaky">squeaky floor</a>
+      <a href="search.html?q=clean+oven">clean oven</a>
+      <a href="search.html?q=stuck+zipper">stuck zipper</a>
+      <a href="search.html?q=rust">rust stains</a>
+      <a href="search.html?q=mold">mold</a>
+      <a href="search.html?q=clogged+drain">clogged drain</a>
+    `;
+    heroStats.insertAdjacentElement('afterend', chips);
+  }
 
   // Hero search
   const heroSearchInput = document.getElementById('hero-search-input');
@@ -139,10 +165,30 @@ async function initTutorial() {
 
   document.title = t.title + ' — FixAnything';
 
+  // NEW FEATURE #5: JSON-LD HowTo structured data
+  const ldScript = document.createElement('script');
+  ldScript.type = 'application/ld+json';
+  ldScript.textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": t.title,
+    "description": t.description,
+    "step": t.steps.map((s, i) => ({
+      "@type": "HowToStep",
+      "position": i + 1,
+      "name": s.title,
+      "text": s.content
+    }))
+  });
+  document.head.appendChild(ldScript);
+
   const container = document.getElementById('tutorial-container');
   if (!container) return;
 
   const related = tutorials.filter(x => t.relatedIds?.includes(x.id)).slice(0, 4);
+
+  // CHANGE #7: Read time for tutorial meta bar
+  const readTime = Math.max(1, Math.ceil(t.steps.reduce((a, s) => a + s.content.split(' ').length, 0) / 200));
 
   container.innerHTML = `
     <div class="tutorial-layout">
@@ -161,16 +207,26 @@ async function initTutorial() {
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               ${t.time}
             </span>
+            <span class="card-time" style="margin-left:0">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              ${readTime} min read
+            </span>
+            <button class="print-btn" onclick="window.print()">&#128424; Print</button>
           </div>
         </div>
 
         ${t.image ? `<div class="tutorial-hero-img"><img src="${t.image}" alt="${t.title}"></div>` : ''}
         <div class="tutorial-intro">${t.intro}</div>
 
+        <a href="#step-1" class="jump-btn">&#8595; Jump to Steps</a>
+
         <div class="ad-slot ad-slot-banner">Advertisement</div>
 
         <div class="needs-box">
-          <h3>What You'll Need</h3>
+          <h3>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:5px;color:var(--rust)"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            What You'll Need
+          </h3>
           <ul class="needs-list">
             ${t.whatYouNeed.map(item => {
               const q = encodeURIComponent(item);
@@ -194,13 +250,21 @@ async function initTutorial() {
 
         ${t.warnings?.length ? `
           <div class="warnings-box">
-            <h3>⚠ Watch Out</h3>
+            <h3>&#9888; Watch Out</h3>
             <ul>
               ${t.warnings.map(w => `<li>${w}</li>`).join('')}
             </ul>
           </div>` : ''}
 
         <div class="ad-slot ad-slot-banner" style="margin-top:32px">Advertisement</div>
+
+        <div class="helpful-box">
+          <p>Was this guide helpful?</p>
+          <div class="helpful-btns">
+            <button onclick="this.parentElement.innerHTML='<span class=helpful-thanks>Thanks for the feedback!</span>'">&#128077; Yes</button>
+            <button onclick="this.parentElement.innerHTML='<span class=helpful-thanks>Thanks for the feedback!</span>'">&#128078; No</button>
+          </div>
+        </div>
       </main>
 
       <aside class="sidebar">
@@ -249,6 +313,30 @@ async function initSearch() {
   if (activeCat) {
     filterBtns.forEach(btn => {
       if (btn.dataset.cat === activeCat) btn.classList.add('active');
+    });
+  }
+
+  // NEW FEATURE #6 (Change): Add clear button to search bar
+  const searchBarLg = document.querySelector('.search-bar-lg');
+  if (searchBarLg && searchInput) {
+    const clearBtn = document.createElement('button');
+    clearBtn.type = 'button';
+    clearBtn.className = 'search-clear-btn';
+    clearBtn.innerHTML = '&times;';
+    clearBtn.title = 'Clear search';
+    clearBtn.style.display = query ? 'flex' : 'none';
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      query = '';
+      clearBtn.style.display = 'none';
+      renderResults();
+    });
+    // Insert before the search button
+    const searchBtn = searchBarLg.querySelector('button');
+    searchBarLg.insertBefore(clearBtn, searchBtn);
+
+    searchInput.addEventListener('input', () => {
+      clearBtn.style.display = searchInput.value ? 'flex' : 'none';
     });
   }
 
@@ -313,7 +401,7 @@ async function initSearch() {
     });
   }
 
-  const searchBtn = document.querySelector('.search-bar-lg button');
+  const searchBtn = document.querySelector('.search-bar-lg button:not(.search-clear-btn)');
   if (searchBtn) {
     searchBtn.addEventListener('click', () => {
       if (searchInput) query = searchInput.value.trim();

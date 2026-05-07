@@ -10,6 +10,9 @@
 </head>
 <body>
 
+<!-- NEW FEATURE #1: Reading progress bar -->
+<div id="reading-progress"></div>
+
 <nav>
   <div class="container nav-inner">
     <a href="index.html" class="logo">Fix<span>Anything</span></a>
@@ -17,12 +20,14 @@
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       <input id="nav-search-input" type="text" placeholder="Search guides…">
     </div>
-    <div class="nav-links">
+    <div class="nav-links" id="nav-links">
       <a href="search.html">All Guides</a>
       <a href="search.html?cat=Home+%26+Plumbing">Home</a>
       <a href="search.html?cat=Kitchen+%26+Appliances">Kitchen</a>
       <a href="search.html?cat=Clothing+%26+Laundry">Clothing</a>
     </div>
+    <!-- NEW FEATURE #6: Hamburger -->
+    <button class="nav-hamburger" id="nav-hamburger">&#9776;</button>
   </div>
 </nav>
 
@@ -52,6 +57,9 @@
   <div class="ad-slot ad-slot-banner" style="margin-top:40px">Advertisement</div>
 </div>
 
+<!-- NEW FEATURE #8: Back to top button -->
+<button id="back-to-top" title="Back to top">&#8593;</button>
+
 <footer>
   <div class="container">
     <div class="footer-inner">
@@ -79,11 +87,57 @@
         </ul>
       </div>
     </div>
-    <div class="footer-bottom">© 2026 FixAnything. All rights reserved.</div>
+    <!-- CHANGE #9: Footer back to top -->
+    <div class="footer-bottom" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <a href="#" class="footer-back-top">&#8593; Back to top</a>
+      <span>© 2026 FixAnything. All rights reserved.</span>
+    </div>
   </div>
 </footer>
 
 <script src="js/app.js"></script>
-<script>initSearch();</script>
+<script>
+  initSearch();
+
+  // NEW FEATURE #1: Reading progress bar
+  (function() {
+    var bar = document.getElementById('reading-progress');
+    window.addEventListener('scroll', function() {
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+
+      // NEW FEATURE #8: Back to top visibility
+      var btn = document.getElementById('back-to-top');
+      if (btn) btn.classList.toggle('visible', scrollTop > 400);
+    }, { passive: true });
+  })();
+
+  // NEW FEATURE #8: Back to top scroll
+  (function() {
+    var btn = document.getElementById('back-to-top');
+    if (btn) btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  })();
+
+  // NEW FEATURE #6: Hamburger menu
+  (function() {
+    var hamburger = document.getElementById('nav-hamburger');
+    var navLinks = document.getElementById('nav-links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', function() {
+        navLinks.classList.toggle('open');
+      });
+    }
+  })();
+
+  // CHANGE #10: Nav active state
+  (function() {
+    var page = location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-links a').forEach(function(a) {
+      var href = a.getAttribute('href').split('?')[0];
+      if (href === page) a.classList.add('active');
+    });
+  })();
+</script>
 </body>
 </html>
