@@ -1299,6 +1299,15 @@ footer ul li a:hover { color: var(--sand-light); }
   border-radius: var(--radius);
 }
 
+/* ── COMMENTS EMPTY STATE ── */
+.comments-empty {
+  color: var(--text3);
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: 20px 0 8px;
+  font-family: -apple-system, sans-serif;
+}
+
 /* ── YOUTUBE-STYLE COMMENTS ── */
 .yt-comment {
   display: flex;

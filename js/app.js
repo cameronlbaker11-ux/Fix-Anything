@@ -120,30 +120,11 @@ function submitSuggestion(id) {
 }
 
 // ── COMMENTS ──
-const SEED_COMMENTS = [
-  { name: "Sarah M.",  text: "This worked perfectly! I had the same problem for weeks.",      days: 3,  likes: 14 },
-  { name: "James K.",  text: "Really clear instructions, fixed it in about 20 minutes.",      days: 7,  likes: 8  },
-  { name: "Emma L.",   text: "Tried this yesterday and it actually worked. Highly recommend.", days: 2,  likes: 21 },
-  { name: "Mike T.",   text: "Step 4 was the tricky one for me but got there in the end.",    days: 5,  likes: 6  },
-  { name: "Priya S.",  text: "Step 3 was the key. Thanks so much — saved me so much stress!", days: 10, likes: 11 },
-  { name: "Dan W.",    text: "Saved me calling a professional. Great breakdown of each step.", days: 14, likes: 17 },
-  { name: "Chloe R.",  text: "Easy to follow even for a complete beginner. 10/10.",           days: 1,  likes: 4  },
-  { name: "Tom H.",    text: "Used this twice now, works every time. Bookmarked.",            days: 21, likes: 9  },
-  { name: "Aisha B.",  text: "The warnings section was really useful — nearly made that mistake.", days: 6, likes: 7 },
-  { name: "Lucas F.",  text: "Got it done in one sitting. Very practical, no fluff.",         days: 9,  likes: 13 },
-];
-
 const AVATAR_COLORS = ['#A3443B','#3D8BAA','#8b5cf6','#d97706','#0ea5e9','#ec4899','#14b8a6','#6366f1'];
 function avatarColor(name) { return AVATAR_COLORS[name.charCodeAt(0) % AVATAR_COLORS.length]; }
 
-function getSeedComments(id) {
-  const h = id.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
-  return [SEED_COMMENTS[h % 10], SEED_COMMENTS[(h + 3) % 10], SEED_COMMENTS[(h + 6) % 10]];
-}
-
 function getComments(id) {
-  const user = JSON.parse(localStorage.getItem('comments_' + id) || '[]');
-  return [...getSeedComments(id), ...user];
+  return JSON.parse(localStorage.getItem('comments_' + id) || '[]');
 }
 
 function saveComment(id, name, text) {
@@ -222,8 +203,16 @@ function submitComment(id) {
   document.getElementById('comment-name').value = '';
   document.getElementById('comment-text').value = '';
   document.getElementById('comments-list').innerHTML = renderComments(id);
-  // Update count
-  document.querySelector('.comments-count').textContent = getComments(id).length;
+  // Update count badge
+  const title = document.querySelector('.comments-title');
+  const count = getComments(id).length;
+  let badge = title.querySelector('.comments-count');
+  if (!badge) {
+    badge = document.createElement('span');
+    badge.className = 'comments-count';
+    title.appendChild(badge);
+  }
+  badge.textContent = count;
 }
 
 // TAG COLORS
@@ -475,8 +464,12 @@ async function initTutorial() {
         </div>
 
         <div class="comments-section">
-          <h3 class="comments-title">Comments <span class="comments-count">${getComments(t.id).length}</span></h3>
-          <div id="comments-list">${renderComments(t.id)}</div>
+          <h3 class="comments-title">Comments ${getComments(t.id).length > 0 ? `<span class="comments-count">${getComments(t.id).length}</span>` : ''}</h3>
+          <div id="comments-list">
+            ${getComments(t.id).length === 0
+              ? `<p class="comments-empty">No comments yet — be the first to share your experience!</p>`
+              : renderComments(t.id)}
+          </div>
           <div class="comment-form">
             <h4>Leave a comment</h4>
             <input id="comment-name" type="text" placeholder="Your name" />
