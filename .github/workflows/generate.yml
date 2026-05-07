@@ -2,7 +2,7 @@ name: Generate Articles
 
 on:
   schedule:
-    - cron: '0 0,6,12,18 * * *'   # runs 4x daily: midnight, 6am, noon, 6pm UTC
+    - cron: '*/15 * * * *'   # every 15 minutes = ~96 articles/day
   workflow_dispatch:            # allows manual trigger from GitHub UI
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
-        run: python generate.py --count 25
+        run: python generate.py --count 1
 
       - name: Commit and push
         run: |
