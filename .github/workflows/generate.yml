@@ -21,6 +21,7 @@ jobs:
       - name: Generate articles
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: python generate.py --count 4
 
       - name: Commit and push
