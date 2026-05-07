@@ -282,15 +282,26 @@ Requirements:
         if article["id"] in existing_ids:
             article["id"] = article["id"] + "-alt"
 
-        # Fetch topic-relevant image from Pexels
+        # Fetch topic-relevant hero image from Pexels
         if not article.get("image"):
             img = fetch_pexels_image(article.get("title", topic))
             if img:
                 article["image"] = img
             else:
-                # Fallback: unique picsum image
                 seed = abs(hash(article["id"])) % 1000
                 article["image"] = f"https://picsum.photos/seed/{seed}/800/450"
+
+        # Fetch step images for key steps (steps 1, 3, 5)
+        if not article.get("stepImages") and article.get("steps"):
+            step_imgs = []
+            for idx in [0, 2, 4]:
+                if idx < len(article["steps"]):
+                    q = article["steps"][idx]["title"] + " " + topic
+                    img = fetch_pexels_image(q)
+                    step_imgs.append(img)
+                else:
+                    step_imgs.append(None)
+            article["stepImages"] = step_imgs
 
         return article
     except Exception as e:

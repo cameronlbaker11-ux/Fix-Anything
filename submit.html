@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit a Guide — FixAnything</title>
+  <meta name="description" content="Know how to fix something? Submit your own guide to FixAnything.">
+  <link rel="stylesheet" href="css/style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7693471479215758" crossorigin="anonymous"></script>
+  <style>
+    .submit-hero { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 48px 0 36px; margin-bottom: 40px; }
+    .submit-hero h1 { font-size: 2rem; margin-bottom: 8px; }
+    .submit-hero p { color: var(--text3); max-width: 520px; }
+    .submit-form { max-width: 720px; margin: 0 auto; padding-bottom: 80px; }
+    .form-step { display: none; }
+    .form-step.active { display: block; }
+    .step-indicator { display: flex; gap: 0; margin-bottom: 36px; }
+    .step-dot { flex: 1; height: 4px; background: var(--border); border-radius: 2px; transition: background 0.3s; }
+    .step-dot.done { background: var(--brick); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 7px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
+      border-radius: 6px; background: var(--bg); color: var(--text);
+      font-family: inherit; font-size: 0.95rem; box-sizing: border-box;
+      transition: border-color 0.15s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--rust); }
+    .form-group textarea { resize: vertical; }
+    .form-group small { display: block; color: var(--text3); font-size: 0.78rem; margin-top: 5px; font-family: -apple-system, sans-serif; }
+    .step-entry { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 12px; position: relative; }
+    .step-entry-num { font-size: 0.72rem; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; font-family: -apple-system, sans-serif; }
+    .remove-step { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--text3); cursor: pointer; font-size: 1.1rem; padding: 2px 6px; border-radius: 4px; }
+    .remove-step:hover { background: var(--bg3); color: var(--brick); }
+    .add-step-btn { background: none; border: 1.5px dashed var(--border); border-radius: 6px; width: 100%; padding: 10px; color: var(--text3); font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.15s; margin-bottom: 20px; }
+    .add-step-btn:hover { border-color: var(--rust); color: var(--brick); background: var(--bg2); }
+    .form-nav { display: flex; gap: 12px; justify-content: space-between; margin-top: 28px; }
+    .btn-next { background: var(--brick); color: white; border: none; padding: 11px 28px; border-radius: 6px; font-family: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+    .btn-next:hover { background: var(--rust); }
+    .btn-back { background: var(--bg2); color: var(--text2); border: 1px solid var(--border); padding: 11px 22px; border-radius: 6px; font-family: inherit; font-size: 0.95rem; cursor: pointer; }
+    .success-screen { text-align: center; padding: 60px 20px; }
+    .success-screen .icon { font-size: 3.5rem; margin-bottom: 16px; }
+    .success-screen h2 { font-size: 1.5rem; margin-bottom: 10px; }
+    .success-screen p { color: var(--text3); max-width: 420px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">Fix<span>Anything</span></a>
+    <div class="nav-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="nav-search-input" type="text" placeholder="Search guides…">
+    </div>
+    <div class="nav-links">
+      <a href="search.html">All Guides</a>
+      <a href="search.html?cat=Home+%26+Plumbing">Home</a>
+      <a href="search.html?cat=Kitchen+%26+Appliances">Kitchen</a>
+      <a href="search.html?cat=Clothing+%26+Laundry">Clothing</a>
+    </div>
+  </div>
+</nav>
+
+<div class="submit-hero">
+  <div class="container">
+    <h1>Submit a Guide</h1>
+    <p>Know how to fix something that isn't on here yet? Share it with the community — we'll review and publish the best ones.</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="submit-form">
+
+    <!-- Step indicators -->
+    <div class="step-indicator">
+      <div class="step-dot done" id="dot-1"></div>
+      <div style="width:8px"></div>
+      <div class="step-dot" id="dot-2"></div>
+      <div style="width:8px"></div>
+      <div class="step-dot" id="dot-3"></div>
+      <div style="width:8px"></div>
+      <div class="step-dot" id="dot-4"></div>
+    </div>
+
+    <!-- Step 1: Basics -->
+    <div class="form-step active" id="fs-1">
+      <h2 style="margin-bottom:6px">The basics</h2>
+      <p style="color:var(--text3);margin-bottom:28px;font-family:-apple-system,sans-serif;font-size:0.9rem">Tell us what this guide is about.</p>
+      <div class="form-group">
+        <label>Guide title *</label>
+        <input id="g-title" type="text" placeholder="e.g. How to Remove Salt Stains from Leather Boots">
+        <small>Be specific — a niche title ranks better in search.</small>
+      </div>
+      <div class="form-group">
+        <label>Category *</label>
+        <select id="g-cat">
+          <option value="">Select a category…</option>
+          <option>Home & Plumbing</option>
+          <option>Home & Cleaning</option>
+          <option>Home & Repair</option>
+          <option>Home & Electrical</option>
+          <option>Home & Pets</option>
+          <option>Kitchen & Appliances</option>
+          <option>Kitchen & Cookware</option>
+          <option>Kitchen & Pests</option>
+          <option>Clothing & Laundry</option>
+          <option>Clothing & Shoes</option>
+          <option>Clothing & Repair</option>
+          <option>Personal Care</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Difficulty</label>
+        <select id="g-diff">
+          <option>Easy</option>
+          <option>Medium</option>
+          <option>Hard</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Time needed</label>
+        <input id="g-time" type="text" placeholder="e.g. 15 min, 1 hour">
+      </div>
+      <div class="form-nav">
+        <div></div>
+        <button class="btn-next" onclick="nextStep(1)">Next →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Intro + supplies -->
+    <div class="form-step" id="fs-2">
+      <h2 style="margin-bottom:6px">Intro & supplies</h2>
+      <p style="color:var(--text3);margin-bottom:28px;font-family:-apple-system,sans-serif;font-size:0.9rem">Help readers understand what they're getting into.</p>
+      <div class="form-group">
+        <label>Short description *</label>
+        <input id="g-desc" type="text" placeholder="One sentence summary of what this guide solves">
+      </div>
+      <div class="form-group">
+        <label>Introduction *</label>
+        <textarea id="g-intro" rows="3" placeholder="2-3 sentences explaining why this problem happens and why your solution works…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>What you'll need *</label>
+        <textarea id="g-needs" rows="3" placeholder="One item per line (e.g. White vinegar&#10;Soft cloth&#10;Warm water)"></textarea>
+        <small>List each supply on a new line.</small>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(2)">← Back</button>
+        <button class="btn-next" onclick="nextStep(2)">Next →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Steps -->
+    <div class="form-step" id="fs-3">
+      <h2 style="margin-bottom:6px">The steps</h2>
+      <p style="color:var(--text3);margin-bottom:28px;font-family:-apple-system,sans-serif;font-size:0.9rem">Add at least 5 steps. More detail = better guide.</p>
+      <div id="steps-container"></div>
+      <button class="add-step-btn" onclick="addStep()">+ Add another step</button>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(3)">← Back</button>
+        <button class="btn-next" onclick="nextStep(3)">Next →</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Warnings + submit -->
+    <div class="form-step" id="fs-4">
+      <h2 style="margin-bottom:6px">Final touches</h2>
+      <p style="color:var(--text3);margin-bottom:28px;font-family:-apple-system,sans-serif;font-size:0.9rem">Almost done.</p>
+      <div class="form-group">
+        <label>Warnings or cautions <span style="font-weight:400;color:var(--text3)">(optional)</span></label>
+        <textarea id="g-warnings" rows="2" placeholder="Anything readers should watch out for? One per line."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Your name <span style="font-weight:400;color:var(--text3)">(optional)</span></label>
+        <input id="g-author" type="text" placeholder="How you'd like to be credited">
+      </div>
+      <div class="form-group">
+        <label>Your email <span style="font-weight:400;color:var(--text3)">(optional — for updates)</span></label>
+        <input id="g-email" type="email" placeholder="your@email.com">
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(4)">← Back</button>
+        <button class="btn-next" onclick="submitGuide()">Submit Guide ✓</button>
+      </div>
+    </div>
+
+    <!-- Success -->
+    <div class="form-step" id="fs-success">
+      <div class="success-screen">
+        <div class="icon">🎉</div>
+        <h2>Guide submitted!</h2>
+        <p>Thanks for contributing. We'll review your guide and publish it if it meets our quality standards. Usually within a few days.</p>
+        <a href="index.html" style="display:inline-block;margin-top:28px;background:var(--brick);color:white;padding:11px 28px;border-radius:6px;text-decoration:none;font-weight:600">← Back to Home</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="logo">Fix<span>Anything</span></div>
+        <p>Step-by-step guides for everyday problems. No fluff, no paywalls — just solutions that work.</p>
+      </div>
+      <div>
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="search.html?cat=Home+%26+Plumbing">Home & Plumbing</a></li>
+          <li><a href="search.html?cat=Home+%26+Cleaning">Home & Cleaning</a></li>
+          <li><a href="search.html?cat=Kitchen+%26+Appliances">Kitchen</a></li>
+          <li><a href="search.html?cat=Clothing+%26+Laundry">Clothing</a></li>
+          <li><a href="search.html?cat=Personal+Care">Personal Care</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="search.html">All Guides</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="submit.html">Submit a Guide</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 FixAnything. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  let stepCount = 0;
+
+  function addStep() {
+    stepCount++;
+    const c = document.getElementById('steps-container');
+    const div = document.createElement('div');
+    div.className = 'step-entry';
+    div.id = 'step-entry-' + stepCount;
+    div.innerHTML = `
+      <div class="step-entry-num">Step ${stepCount}</div>
+      ${stepCount > 1 ? `<button class="remove-step" onclick="removeStep(${stepCount})" title="Remove">×</button>` : ''}
+      <div class="form-group" style="margin-bottom:10px">
+        <input type="text" placeholder="Step title (e.g. Blot the stain immediately)" id="step-title-${stepCount}">
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <textarea rows="2" placeholder="Explain what to do and why it works…" id="step-content-${stepCount}"></textarea>
+      </div>`;
+    c.appendChild(div);
+  }
+
+  function removeStep(n) {
+    document.getElementById('step-entry-' + n).remove();
+  }
+
+  // Init with 5 steps
+  for (let i = 0; i < 5; i++) addStep();
+
+  function nextStep(n) {
+    if (n === 1) {
+      if (!document.getElementById('g-title').value.trim()) { alert('Please enter a title.'); return; }
+      if (!document.getElementById('g-cat').value) { alert('Please select a category.'); return; }
+    }
+    if (n === 2) {
+      if (!document.getElementById('g-desc').value.trim()) { alert('Please add a description.'); return; }
+      if (!document.getElementById('g-intro').value.trim()) { alert('Please write an introduction.'); return; }
+      if (!document.getElementById('g-needs').value.trim()) { alert('Please list what\'s needed.'); return; }
+    }
+    document.getElementById('fs-' + n).classList.remove('active');
+    document.getElementById('fs-' + (n+1)).classList.add('active');
+    document.getElementById('dot-' + (n+1)).classList.add('done');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function prevStep(n) {
+    document.getElementById('fs-' + n).classList.remove('active');
+    document.getElementById('fs-' + (n-1)).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function submitGuide() {
+    const steps = [];
+    document.querySelectorAll('.step-entry').forEach((el, i) => {
+      const n = el.id.replace('step-entry-', '');
+      const title = document.getElementById('step-title-' + n)?.value.trim();
+      const content = document.getElementById('step-content-' + n)?.value.trim();
+      if (title) steps.push({ title, content });
+    });
+    if (steps.length < 3) { alert('Please add at least 3 steps.'); return; }
+
+    const submission = {
+      title: document.getElementById('g-title').value.trim(),
+      category: document.getElementById('g-cat').value,
+      difficulty: document.getElementById('g-diff').value,
+      time: document.getElementById('g-time').value.trim() || '15 min',
+      description: document.getElementById('g-desc').value.trim(),
+      intro: document.getElementById('g-intro').value.trim(),
+      whatYouNeed: document.getElementById('g-needs').value.split('\n').map(s => s.trim()).filter(Boolean),
+      steps,
+      warnings: document.getElementById('g-warnings').value.split('\n').map(s => s.trim()).filter(Boolean),
+      author: document.getElementById('g-author').value.trim(),
+      email: document.getElementById('g-email').value.trim(),
+      submittedAt: new Date().toISOString(),
+    };
+
+    // Save to localStorage for review
+    const pending = JSON.parse(localStorage.getItem('pending_guides') || '[]');
+    pending.push(submission);
+    localStorage.setItem('pending_guides', JSON.stringify(pending));
+
+    document.getElementById('fs-4').classList.remove('active');
+    document.getElementById('fs-success').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  const navSearch = document.getElementById('nav-search-input');
+  if (navSearch) {
+    navSearch.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && navSearch.value.trim())
+        window.location = `search.html?q=${encodeURIComponent(navSearch.value.trim())}`;
+    });
+  }
+</script>
+</body>
+</html>

@@ -61,23 +61,84 @@ function voteHelpful(id, btn) {
   box.querySelector('.helpful-btns').innerHTML = '<span class="helpful-thanks">Thanks for the feedback! 🙌</span>';
 }
 
+function voteNotHelpful(id) {
+  localStorage.setItem('voted_' + id, '1');
+  showSuggestionModal(id);
+}
+
+// ── SUGGESTION MODAL ──
+function showSuggestionModal(id) {
+  const existing = document.getElementById('suggestion-modal');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'suggestion-modal';
+  modal.innerHTML = `
+    <div class="modal-backdrop" onclick="closeSuggestionModal()"></div>
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <h3>Help us improve this guide</h3>
+      <p class="modal-sub">Tell us what went wrong and we'll fix it.</p>
+      <div class="modal-options">
+        <label><input type="radio" name="issue" value="Steps unclear"> Steps were unclear or confusing</label>
+        <label><input type="radio" name="issue" value="Missing info"> Missing important information</label>
+        <label><input type="radio" name="issue" value="Didn't work"> It didn't work for my situation</label>
+        <label><input type="radio" name="issue" value="Wrong category"> Wrong category or topic</label>
+        <label><input type="radio" name="issue" value="Other"> Something else</label>
+      </div>
+      <textarea id="suggestion-detail" placeholder="Optional: describe the problem in more detail…" rows="3"></textarea>
+      <div class="modal-actions">
+        <button class="modal-cancel" onclick="closeSuggestionModal()">Cancel</button>
+        <button class="modal-submit" onclick="submitSuggestion('${id}')">Send Feedback</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.querySelector('.modal-sheet').classList.add('modal-sheet-open'));
+}
+
+function closeSuggestionModal() {
+  const modal = document.getElementById('suggestion-modal');
+  if (!modal) return;
+  modal.querySelector('.modal-sheet').classList.remove('modal-sheet-open');
+  setTimeout(() => modal.remove(), 300);
+}
+
+function submitSuggestion(id) {
+  const issue = document.querySelector('input[name="issue"]:checked')?.value || 'Not specified';
+  const detail = document.getElementById('suggestion-detail').value.trim();
+  const feedback = { id, issue, detail, url: location.href, ts: Date.now() };
+  const all = JSON.parse(localStorage.getItem('fix_feedback') || '[]');
+  all.push(feedback);
+  localStorage.setItem('fix_feedback', JSON.stringify(all));
+  const sheet = document.getElementById('suggestion-modal').querySelector('.modal-sheet');
+  sheet.innerHTML = `
+    <div style="text-align:center;padding:40px 20px">
+      <div style="font-size:2.5rem;margin-bottom:12px">🛠</div>
+      <h3>Feedback received</h3>
+      <p style="color:var(--text3);margin-top:8px">We'll review and improve this guide. Thanks for helping make FixAnything better.</p>
+      <button class="modal-submit" style="margin-top:24px" onclick="closeSuggestionModal()">Done</button>
+    </div>`;
+}
+
 // ── COMMENTS ──
 const SEED_COMMENTS = [
-  { name: "Sarah M.",   text: "This worked perfectly! I had the same problem for weeks.",       days: 3  },
-  { name: "James K.",   text: "Really clear instructions, fixed it in about 20 minutes.",       days: 7  },
-  { name: "Emma L.",    text: "Tried this yesterday and it actually worked. Highly recommend.",  days: 2  },
-  { name: "Mike T.",    text: "Good guide. I had to repeat step 4 twice but got there.",         days: 5  },
-  { name: "Priya S.",   text: "Step 3 was the key one for me. Thanks so much!",                  days: 10 },
-  { name: "Dan W.",     text: "Saved me calling a professional. Great breakdown.",               days: 14 },
-  { name: "Chloe R.",   text: "Easy to follow even for a complete beginner.",                   days: 1  },
-  { name: "Tom H.",     text: "Used this on two separate occasions now, works every time.",     days: 21 },
-  { name: "Aisha B.",   text: "Appreciated the warnings section — nearly made that mistake.",   days: 6  },
-  { name: "Lucas F.",   text: "Got it done in one sitting. Very practical advice.",             days: 9  },
+  { name: "Sarah M.",  text: "This worked perfectly! I had the same problem for weeks.",      days: 3,  likes: 14 },
+  { name: "James K.",  text: "Really clear instructions, fixed it in about 20 minutes.",      days: 7,  likes: 8  },
+  { name: "Emma L.",   text: "Tried this yesterday and it actually worked. Highly recommend.", days: 2,  likes: 21 },
+  { name: "Mike T.",   text: "Step 4 was the tricky one for me but got there in the end.",    days: 5,  likes: 6  },
+  { name: "Priya S.",  text: "Step 3 was the key. Thanks so much — saved me so much stress!", days: 10, likes: 11 },
+  { name: "Dan W.",    text: "Saved me calling a professional. Great breakdown of each step.", days: 14, likes: 17 },
+  { name: "Chloe R.",  text: "Easy to follow even for a complete beginner. 10/10.",           days: 1,  likes: 4  },
+  { name: "Tom H.",    text: "Used this twice now, works every time. Bookmarked.",            days: 21, likes: 9  },
+  { name: "Aisha B.",  text: "The warnings section was really useful — nearly made that mistake.", days: 6, likes: 7 },
+  { name: "Lucas F.",  text: "Got it done in one sitting. Very practical, no fluff.",         days: 9,  likes: 13 },
 ];
+
+const AVATAR_COLORS = ['#A3443B','#3D8BAA','#8b5cf6','#d97706','#0ea5e9','#ec4899','#14b8a6','#6366f1'];
+function avatarColor(name) { return AVATAR_COLORS[name.charCodeAt(0) % AVATAR_COLORS.length]; }
 
 function getSeedComments(id) {
   const h = id.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
-  return [SEED_COMMENTS[h % 10], SEED_COMMENTS[(h + 3) % 10]];
+  return [SEED_COMMENTS[h % 10], SEED_COMMENTS[(h + 3) % 10], SEED_COMMENTS[(h + 6) % 10]];
 }
 
 function getComments(id) {
@@ -87,20 +148,70 @@ function getComments(id) {
 
 function saveComment(id, name, text) {
   const existing = JSON.parse(localStorage.getItem('comments_' + id) || '[]');
-  existing.push({ name, text, days: 0 });
+  existing.push({ name, text, days: 0, likes: 0 });
   localStorage.setItem('comments_' + id, JSON.stringify(existing));
 }
 
+function likeComment(el, n) {
+  el.classList.toggle('liked');
+  const span = el.querySelector('.like-count');
+  span.textContent = el.classList.contains('liked') ? n + 1 : n;
+}
+
 function renderComments(id) {
-  return getComments(id).map(c => `
-    <div class="comment">
-      <div class="comment-meta">
-        <span class="comment-avatar">${c.name[0]}</span>
-        <strong>${c.name}</strong>
-        <span class="comment-date">${c.days === 0 ? 'Just now' : c.days === 1 ? '1 day ago' : c.days + ' days ago'}</span>
+  return getComments(id).map((c, i) => `
+    <div class="yt-comment">
+      <div class="yt-avatar" style="background:${avatarColor(c.name)}">${c.name[0]}</div>
+      <div class="yt-comment-body">
+        <div class="yt-comment-meta">
+          <span class="yt-name">${c.name}</span>
+          <span class="yt-date">${c.days === 0 ? 'Just now' : c.days === 1 ? '1 day ago' : c.days + ' days ago'}</span>
+        </div>
+        <p class="yt-comment-text">${c.text}</p>
+        <div class="yt-comment-actions">
+          <button class="yt-like-btn" onclick="likeComment(this, ${c.likes || 0})">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+            <span class="like-count">${c.likes || 0}</span>
+          </button>
+          <button class="yt-reply-btn" onclick="toggleReply(this)">Reply</button>
+        </div>
+        <div class="yt-reply-form" style="display:none">
+          <input type="text" placeholder="Add a reply…" class="yt-reply-input">
+          <button onclick="submitReply(this, '${id}')">Reply</button>
+        </div>
       </div>
-      <p>${c.text}</p>
     </div>`).join('');
+}
+
+function toggleReply(btn) {
+  const form = btn.closest('.yt-comment-body').querySelector('.yt-reply-form');
+  form.style.display = form.style.display === 'none' ? 'flex' : 'none';
+  if (form.style.display === 'flex') form.querySelector('input').focus();
+}
+
+function submitReply(btn, id) {
+  const input = btn.previousElementSibling;
+  const text = input.value.trim();
+  if (!text) return;
+  const comment = btn.closest('.yt-comment');
+  const existing = comment.querySelector('.yt-replies');
+  const replyEl = document.createElement('div');
+  replyEl.className = 'yt-reply';
+  replyEl.innerHTML = `
+    <div class="yt-avatar yt-avatar-sm" style="background:${avatarColor('You')}">Y</div>
+    <div class="yt-comment-body">
+      <div class="yt-comment-meta"><span class="yt-name">You</span><span class="yt-date">Just now</span></div>
+      <p class="yt-comment-text">${text}</p>
+    </div>`;
+  if (existing) { existing.appendChild(replyEl); }
+  else {
+    const replies = document.createElement('div');
+    replies.className = 'yt-replies';
+    replies.appendChild(replyEl);
+    comment.querySelector('.yt-comment-body').appendChild(replies);
+  }
+  input.value = '';
+  btn.closest('.yt-reply-form').style.display = 'none';
 }
 
 function submitComment(id) {
@@ -111,6 +222,8 @@ function submitComment(id) {
   document.getElementById('comment-name').value = '';
   document.getElementById('comment-text').value = '';
   document.getElementById('comments-list').innerHTML = renderComments(id);
+  // Update count
+  document.querySelector('.comments-count').textContent = getComments(id).length;
 }
 
 // TAG COLORS
@@ -324,14 +437,19 @@ async function initTutorial() {
 
         <div class="steps-section">
           <h2>Step-by-Step Instructions</h2>
-          ${t.steps.map((step, i) => `
+          ${t.steps.map((step, i) => {
+            const stepImgIdx = [0,2,4].indexOf(i);
+            const stepImg = stepImgIdx >= 0 && t.stepImages?.[stepImgIdx];
+            return `
             <div class="step" id="step-${i+1}">
               <div class="step-num" style="background:${STEP_COLORS[i % STEP_COLORS.length]};box-shadow:0 2px 8px ${STEP_COLORS[i % STEP_COLORS.length]}55">${i+1}</div>
               <div class="step-content">
                 <h3>${step.title}</h3>
                 <p>${step.content}</p>
+                ${stepImg ? `<div class="step-img"><img src="${stepImg}" alt="${step.title}" loading="lazy"></div>` : ''}
               </div>
-            </div>`).join('')}
+            </div>`;
+          }).join('')}
         </div>
 
         ${t.warnings?.length ? `
@@ -351,7 +469,7 @@ async function initTutorial() {
             ${localStorage.getItem('voted_' + t.id)
               ? '<span class="helpful-thanks">Thanks for the feedback! 🙌</span>'
               : `<button onclick="voteHelpful('${t.id}', this)">👍 Yes, it helped</button>
-                 <button onclick="this.closest('.helpful-box').querySelector('.helpful-btns').innerHTML='<span class=helpful-thanks>Thanks for the feedback!</span>'">👎 Not really</button>`
+                 <button onclick="voteNotHelpful('${t.id}')">👎 Not really</button>`
             }
           </div>
         </div>
